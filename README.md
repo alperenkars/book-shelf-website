@@ -39,13 +39,15 @@ This guide will help you set up and run the project on your local machine. You c
 ## Running the Project
 
 ### 1. Start the Server
-Run the following command to start the project server:
+Run the following command in the backend file to start the project server:
 
   ```bash
   node app.js  
   ```
 ---
 ### 2. Route the Server
+Run the following command in the project file in different terminal:
+
   ```bash
   python -m http.server 8000
   ```
