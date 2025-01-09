@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #books {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .book {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Books</h1>
+  <div id="books"></div>
+  <script>
+    async function fetchBooks() {
+      try {
+        const response = await fetch('http://localhost:5000/api/books');
+        if (!response.ok) throw new Error('Failed to fetch books');
+        const books = await response.json();
+
+        const booksContainer = document.getElementById('books');
+        booksContainer.innerHTML = '';
+
+        books.forEach(book => {
+          const bookDiv = document.createElement('div');
+          bookDiv.className = 'book';
+          bookDiv.innerHTML = `
+            <h3>${book.title}</h3>
+            <p><strong>Author:</strong> ${book.author}</p>
+            <p><strong>Genre:</strong> ${book.genre}</p>
+            <p><strong>Year:</strong> ${book.year}</p>
+          `;
+          booksContainer.appendChild(bookDiv);
+        });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    fetchBooks();
+  </script>
+</body>
+</html>
