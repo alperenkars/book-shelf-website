@@ -1,6 +1,6 @@
-# JavaScript Project Setup Instructions
+# Project Setup Instructions
 
-This guide will help you set up and run the project on your local machine. Follow the steps below to get started.
+This guide will help you set up and run the project on your local machine. You can follow the steps below to get started.
 
 ---
 
@@ -15,7 +15,7 @@ This guide will help you set up and run the project on your local machine. Follo
 ## Project Setup
 
 ### 1. Create a `.env` File
-1. In the root directory of the project, create a file named `.env`.
+1. In the project's root directory, create a file named `.env`.
 2. Add the following content to the file, replacing `[your db password]` with your database password:
 
     ```plaintext
