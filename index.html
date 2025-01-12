@@ -22,16 +22,59 @@
 </head>
 <body>
   <h1>Books</h1>
+  <div>
+    <input type="text" id="bookName" placeholder="Enter book name" />
+    <input type="text" id="authorName" placeholder="Enter author name" />
+    <select id="genreSelect">
+      <option value="">Select Genre</option>
+      <option value="Non-Fiction">Non-Fiction</option>
+      <option value="Thriller">Thriller</option>
+      <option value="Mystery">Mystery</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="Horror">Horror</option>
+      <option value="Romance">Romance</option>
+      <option value="Historical">Historical</option>
+      <option value="Biography">Biography</option>
+      <option value="Science Fiction">Science Fiction</option>
+      <option value="Fiction">Fiction</option>
+    </select>
+    <input type="number" id="minPageCount" placeholder="Min pages" />
+    <input type="number" id="maxPageCount" placeholder="Max pages" />
+    <button onclick="fetchBooks()">Filter</button>
+  </div>
   <div id="books"></div>
   <script>
     async function fetchBooks() {
+      const bookName = document.getElementById('bookName').value;
+      const authorName = document.getElementById('authorName').value;
+      const genre = document.getElementById('genreSelect').value;
+      const minPageCount = document.getElementById('minPageCount').value;
+      const maxPageCount = document.getElementById('maxPageCount').value;
+
+      // Construct the query parameters
+      const params = [];
+      if (bookName) params.push(`title=${encodeURIComponent(bookName)}`);
+      if (authorName) params.push(`author=${encodeURIComponent(authorName)}`);
+      if (genre) params.push(`genre=${encodeURIComponent(genre)}`);
+      if (minPageCount) params.push(`minPageCount=${encodeURIComponent(minPageCount)}`);
+      if (maxPageCount) params.push(`maxPageCount=${encodeURIComponent(maxPageCount)}`);
+      const query = params.length > 0 ? `?${params.join('&')}` : '';
+
+      // Construct the URL with the query parameters
+      const url = `http://localhost:5000/api/books${query}`;
+
       try {
-        const response = await fetch('http://localhost:5000/api/books');
+        const response = await fetch(url);
         if (!response.ok) throw new Error('Failed to fetch books');
         const books = await response.json();
 
         const booksContainer = document.getElementById('books');
         booksContainer.innerHTML = '';
+
+        if (books.length === 0) {
+          booksContainer.innerHTML = '<p>No books found</p>';
+          return;
+        }
 
         books.forEach(book => {
           const bookDiv = document.createElement('div');
@@ -41,6 +84,7 @@
             <p><strong>Author:</strong> ${book.author}</p>
             <p><strong>Genre:</strong> ${book.genre}</p>
             <p><strong>Year:</strong> ${book.year}</p>
+            <p><strong>Pages:</strong> ${book.pages}</p>
           `;
           booksContainer.appendChild(bookDiv);
         });
@@ -49,6 +93,7 @@
       }
     }
 
+    // Fetch all books initially
     fetchBooks();
   </script>
 </body>
