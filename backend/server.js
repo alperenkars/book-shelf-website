@@ -3,6 +3,9 @@ const app = express();
 const db = require('./config/db');
 const bookRoutes = require('./routes/bookRoutes');
 
+
+//this means server uses bookRoutes in routes folder to display the books on /api/books endpoint
+//also express is a node.js framework to create apis and web applications, routing and middleware mechanisms come from there
 app.use(express.json());
 app.use('/api/books', bookRoutes);
 
