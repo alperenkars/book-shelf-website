@@ -1,0 +1,49 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light grey background */
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .Site.Header {
+    background-color: #343a40; /* Dark background for header */
+    color: white;
+  }
+  
+  .Site.Header a {
+    color: blue;
+    text-decoration: none;
+    margin-right: 15px;
+  }
+  
+  .Site.Footer {
+    background-color: #343a40; /* Dark background for footer */
+    color: black;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .Nav {
+    background-color: #343a40; /* Dark background for nav */
+    color: white;
+    height: 100%;
+    padding: 10px;
+  }
+  
+  .Nav a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+  }
+  
+  .Nav a:hover {
+    background-color: #495057; /* Darker background on hover */
+  }

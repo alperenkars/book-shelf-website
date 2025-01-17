@@ -1,12 +1,19 @@
-const express = require('express');
-const cors = require('cors');
-const bookRoutes = require('./routes/bookRoutes');
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import UserList from './components/UserList';
+import LibraryList from './components/LibraryList';
+import BookList from './components/BookList';
 
-const app = express();
+const App = () => {
+    return (
+        <Router>
+            <Switch>
+                <Route path="/users" component={UserList} />
+                <Route path="/libraries" component={LibraryList} />
+                <Route path="/books" component={BookList} />
+            </Switch>
+        </Router>
+    );
+};
 
-app.use(cors());
-app.use(express.json());
-app.use('/api', bookRoutes);
-
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+export default App;
