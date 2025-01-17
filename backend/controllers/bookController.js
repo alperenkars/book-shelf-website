@@ -1,8 +1,8 @@
-const db = require('../models/db');
+const db = require('../config/database');
 
 exports.getBooks = async (req, res) => {
   const { title, author, genre, year, minPageCount, maxPageCount } = req.query;
-  let query = "SELECT * FROM books WHERE 1=1";
+  let query = "SELECT * FROM book WHERE 1=1";
   const params = [];
 
   if (title) {
