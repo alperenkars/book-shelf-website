@@ -28,7 +28,7 @@ connection.query(initSql, (err) => {
   
     // Insert books into the database
     const query = `
-      INSERT INTO books (title, author, genre, year, isbn, publisher, pages)
+      INSERT INTO Books (title, author, genre, year, isbn, publisher, pages)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
   
