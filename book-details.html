@@ -19,13 +19,31 @@
         if (data.error) {
           document.getElementById('book-details').innerText = data.error;
         } else {
-          document.getElementById('book-details').innerHTML = `
+          // Display book details
+          let bookDetailsHTML = `
             <h1>${data.title}</h1>
             <p><strong>Author:</strong> ${data.author}</p>
             <p><strong>Genre:</strong> ${data.genre}</p>
-            <p><strong>Year:</strong> ${data.year}</p>
-            <p><strong>Pages:</strong> ${data.pages}</p>
+            <p><strong>ISBN:</strong> ${data.isbn}</p>
           `;
+
+          // Display the list of owners
+          if (data.owners && data.owners.length > 0) {
+            bookDetailsHTML += `<h2>Owned By:</h2><ul>`;
+            data.owners.forEach(owner => {
+              bookDetailsHTML += `
+                <li>
+                  <p><strong>Name:</strong> ${owner.user_name}</p>
+                  <p><strong>Email:</strong> ${owner.email}</p>
+                </li>
+              `;
+            });
+            bookDetailsHTML += `</ul>`;
+          } else {
+            bookDetailsHTML += `<p><strong>No owners for this book.</strong></p>`;
+          }
+
+          document.getElementById('book-details').innerHTML = bookDetailsHTML;
         }
       })
       .catch(error => {
