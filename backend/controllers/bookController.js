@@ -42,3 +42,20 @@ exports.getBooks = async (req, res) => {
     res.status(500).json({ error: 'Database error' });
   }
 };
+
+exports.getBookById = async (req, res) => {
+  const { book_id } = req.params;
+  const query = "SELECT * FROM book WHERE book_id = ?";
+  
+  try {
+    const [book] = await db.query(query, [book_id]);
+    if (book.length === 0) {
+      return res.status(404).json({ error: 'Book not found' });
+    }
+    res.status(200).json(book[0]);
+  } catch (error) {
+    console.error('Database Error:', error);
+    res.status(500).json({ error: 'Database error' });
+  }
+};
+

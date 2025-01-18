@@ -85,6 +85,7 @@
             <p><strong>Genre:</strong> ${book.genre}</p>
             <p><strong>Year:</strong> ${book.year}</p>
             <p><strong>Pages:</strong> ${book.pages}</p>
+            <button class="view-details" data-id="${book.book_id}">Go to Book</button>
           `;
           booksContainer.appendChild(bookDiv);
         });
@@ -92,6 +93,14 @@
         console.error('Error:', error);
       }
     }
+
+    // Event listener for dynamic buttons
+    document.getElementById('books').addEventListener('click', event => {
+      if (event.target.classList.contains('view-details')) {
+        const bookId = event.target.getAttribute('data-id');
+        window.location.href = `book-details.html?book_id=${bookId}`;
+      }
+    });
 
     // Fetch all books initially
     fetchBooks();

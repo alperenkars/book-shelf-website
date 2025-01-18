@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Details</title>
+</head>
+<body>
+  <div id="book-details">
+    <!-- Book details will be displayed here -->
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const bookId = urlParams.get('book_id');
+
+    fetch(`http://localhost:5001/api/books/${bookId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          document.getElementById('book-details').innerText = data.error;
+        } else {
+          document.getElementById('book-details').innerHTML = `
+            <h1>${data.title}</h1>
+            <p><strong>Author:</strong> ${data.author}</p>
+            <p><strong>Genre:</strong> ${data.genre}</p>
+            <p><strong>Year:</strong> ${data.year}</p>
+            <p><strong>Pages:</strong> ${data.pages}</p>
+          `;
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching book details:', error);
+        document.getElementById('book-details').innerText = 'Error loading book details.';
+      });
+  </script>
+</body>
+</html>
