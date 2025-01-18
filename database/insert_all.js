@@ -6,11 +6,11 @@ const scripts = [
   'create_database.js',
   'insert_users.js',
   'insert_books.js',
-  //'insert_libraries.js',
-  //'insert_book_copies.js',
-  //'insert_library_includes_book.js',
-  //'insert_follows.js',
-  //'insert_user_borrow_book.js',
+  'insert_libraries.js',
+  'insert_book_copies.js',
+  'insert_library_includes_book.js',
+  'insert_follows.js',
+  'insert_user_borrow_book.js',
 ];
 
 // Function to execute a script
