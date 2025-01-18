@@ -7,12 +7,18 @@
 </head>
 <body>
   <div id="book-details">
-    <!-- Book details will be displayed here -->
+    <!-- Book details will be dynamically added here -->
   </div>
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('book_id');
 
+    // Function to navigate to the user details page
+    function goToUserPage(userId) {
+      window.location.href = `user-details.html?user_id=${userId}`;
+    }
+
+    // Fetch book details and display them
     fetch(`http://localhost:5001/api/books/${bookId}`)
       .then(response => response.json())
       .then(data => {
@@ -35,6 +41,7 @@
                 <li>
                   <p><strong>Name:</strong> ${owner.user_name}</p>
                   <p><strong>Email:</strong> ${owner.email}</p>
+                  <button onclick="goToUserPage(${owner.user_id})">Go to Page</button>
                 </li>
               `;
             });

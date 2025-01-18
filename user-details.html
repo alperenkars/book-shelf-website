@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details</title>
+</head>
+<body>
+  <div id="user-details">
+    <!-- User details will be displayed here -->
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('user_id');
+
+    fetch(`http://localhost:5001/api/users/${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          document.getElementById('user-details').innerText = data.error;
+        } else {
+          const { user, followers, following } = data;
+
+          // Render followers and following lists
+          const followersList = followers.map(f => `
+            <li>
+              ${f.user_name} (${f.email})
+              <button onclick="redirectToUser(${f.user_id})">View Profile</button>
+            </li>
+          `).join('');
+
+          const followingList = following.map(f => `
+            <li>
+              ${f.user_name} (${f.email})
+              <button onclick="redirectToUser(${f.user_id})">View Profile</button>
+            </li>
+          `).join('');
+
+          // Render user details
+          document.getElementById('user-details').innerHTML = `
+            <h1>${user.user_name}</h1>
+            <p><strong>Email:</strong> ${user.email}</p>
+            <h2>Followers</h2>
+            <ul>${followersList || '<li>No followers found</li>'}</ul>
+            <h2>Following</h2>
+            <ul>${followingList || '<li>Not following anyone</li>'}</ul>
+          `;
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching user details:', error);
+        document.getElementById('user-details').innerText = 'Error loading user details.';
+      });
+
+    function redirectToUser(userId) {
+      window.location.href = `?user_id=${userId}`;
+    }
+  </script>
+</body>
+</html>
