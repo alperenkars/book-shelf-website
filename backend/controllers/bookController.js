@@ -1,47 +1,62 @@
 const db = require('../config/database');
 
 exports.getBooks = async (req, res) => {
-  const { title, author, genre, year, minPageCount, maxPageCount } = req.query;
-  let query = "SELECT * FROM book WHERE 1=1";
+  const { title, author, genre, year, minPageCount, maxPageCount, minOwners } = req.query;
+  
+  let query = `
+    SELECT b.*, COUNT(bc.copy_id) AS owner_count
+    FROM book b
+    LEFT JOIN bookcopy bc ON b.book_id = bc.book_id
+    WHERE 1=1
+  `;
   const params = [];
 
   if (title) {
-    query += " AND title LIKE ?";
+    query += " AND b.title LIKE ?";
     params.push(`%${title}%`);
   }
   if (author) {
-    query += " AND author LIKE ?";
+    query += " AND b.author LIKE ?";
     params.push(`%${author}%`);
   }
   if (genre) {
-    query += " AND genre = ?";
+    query += " AND b.genre = ?";
     params.push(genre);
   }
   if (year) {
-    query += " AND year = ?";
+    query += " AND b.year = ?";
     params.push(year);
   }
   if (minPageCount) {
-    query += " AND pages >= ?";
+    query += " AND b.pages >= ?";
     params.push(Number(minPageCount));
   }
   if (maxPageCount) {
-    query += " AND pages <= ?";
+    query += " AND b.pages <= ?";
     params.push(Number(maxPageCount));
+  }
+
+  query += `
+    GROUP BY b.book_id
+  `;
+
+  if (minOwners) {
+    query += " HAVING owner_count >= ?";
+    params.push(Number(minOwners));
   }
 
   console.log("SQL Query:", query);
   console.log("Query Parameters:", params);
-  
+
   try {
     const [books] = await db.query(query, params);
     res.status(200).json(books);
-    
   } catch (error) {
     console.error('Database Error:', error);
     res.status(500).json({ error: 'Database error' });
   }
 };
+
 
 exports.getBookById = async (req, res) => {
   const { book_id } = req.params;

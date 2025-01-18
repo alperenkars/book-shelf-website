@@ -40,6 +40,7 @@
     </select>
     <input type="number" id="minPageCount" placeholder="Min pages" />
     <input type="number" id="maxPageCount" placeholder="Max pages" />
+    <input type="number" id="minOwners" placeholder="Owned by at least..." />
     <button onclick="fetchBooks()">Filter</button>
   </div>
   <div id="books"></div>
@@ -50,6 +51,7 @@
       const genre = document.getElementById('genreSelect').value;
       const minPageCount = document.getElementById('minPageCount').value;
       const maxPageCount = document.getElementById('maxPageCount').value;
+      const minOwners = document.getElementById('minOwners').value;
 
       // Construct the query parameters
       const params = [];
@@ -58,6 +60,7 @@
       if (genre) params.push(`genre=${encodeURIComponent(genre)}`);
       if (minPageCount) params.push(`minPageCount=${encodeURIComponent(minPageCount)}`);
       if (maxPageCount) params.push(`maxPageCount=${encodeURIComponent(maxPageCount)}`);
+      if (minOwners) params.push(`minOwners=${encodeURIComponent(minOwners)}`);
       const query = params.length > 0 ? `?${params.join('&')}` : '';
 
       // Construct the URL with the query parameters
