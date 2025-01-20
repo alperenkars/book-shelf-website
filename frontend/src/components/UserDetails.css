@@ -1,0 +1,32 @@
+.profile-banner {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.profile-username {
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.profile-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.profile-card-title {
+  font-size: 1.2em;
+  color: #333;
+}
+
+.profile-card-number {
+  font-size: 2em;
+  font-weight: bold;
+  color: #007bff;
+}
