@@ -42,70 +42,53 @@ exports.getBooks = async (req, res) => {
 
   if (minOwners) {
     query += " HAVING owner_count >= ?";
-    params.push(Number(minOwners));
+    params.push(minOwners);
   }
 
-  console.log("SQL Query:", query);
-  console.log("Query Parameters:", params);
-
   try {
-    const [books] = await db.query(query, params);
-    res.status(200).json(books);
+    const [rows] = await db.query(query, params);
+    res.json(rows);
   } catch (error) {
-    console.error('Database Error:', error);
-    res.status(500).json({ error: 'Database error' });
+    console.error('Error fetching books:', error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
-
 exports.getBookById = async (req, res) => {
-  const { book_id } = req.params;
-  const query = `
-    SELECT 
-      b.book_id, 
-      b.title, 
-      b.author, 
-      b.genre, 
-      b.isbn,
-      u.user_id, 
-      u.user_name, 
-      u.email
-    FROM 
-      book b
-    LEFT JOIN 
-      bookcopy bc ON b.book_id = bc.book_id
-    LEFT JOIN 
-      user u ON bc.owned_by = u.user_id
-    WHERE 
-      b.book_id = ?
-  `;
-
+  const { bookId } = req.params;
   try {
-    const [rows] = await db.query(query, [book_id]);
+    const bookQuery = 'SELECT * FROM Book WHERE book_id = ?';
+    const borrowersQuery = `
+      SELECT 
+        u.user_id, 
+        u.user_name, 
+        u.email, 
+        ubb.status, 
+        ubb.borrow_date, 
+        ubb.return_date
+      FROM 
+        User u
+      JOIN 
+        User_Borrow_Book ubb ON u.user_id = ubb.user_id
+      JOIN 
+        BookCopy bc ON ubb.copy_id = bc.copy_id
+      WHERE 
+        bc.book_id = ?
+    `;
 
-    if (rows.length === 0) {
+    const [bookRows] = await db.query(bookQuery, [bookId]);
+    if (bookRows.length === 0) {
       return res.status(404).json({ error: 'Book not found' });
     }
 
-    const book = {
-      book_id: rows[0].book_id,
-      title: rows[0].title,
-      author: rows[0].author,
-      genre: rows[0].genre,
-      isbn: rows[0].isbn,
-      owners: rows
-        .filter(row => row.user_id)
-        .map(row => ({
-          user_id: row.user_id,
-          user_name: row.user_name,
-          email: row.email,
-        }))
-    };
+    const [borrowers] = await db.query(borrowersQuery, [bookId]);
 
-    res.status(200).json(book);
+    const book = bookRows[0];
+    book.borrowers = borrowers;
+
+    res.json(book);
   } catch (error) {
-    console.error('Database Error:', error);
-    res.status(500).json({ error: 'Database error' });
+    console.error('Error fetching book details:', error);
+    res.status(500).send('Internal Server Error');
   }
 };
-
