@@ -13,6 +13,11 @@
     const urlParams = new URLSearchParams(window.location.search);
     const bookId = urlParams.get('book_id');
 
+    // Function to navigate to the home page
+    function goToHomePage() {
+      window.location.href = `/`;
+    }
+
     // Function to navigate to the user details page
     function goToUserPage(userId) {
       window.location.href = `user-details.html?user_id=${userId}`;
@@ -27,6 +32,7 @@
         } else {
           // Display book details
           let bookDetailsHTML = `
+            <button onclick="goToHomePage()">Go to Home</button>
             <h1>${data.title}</h1>
             <p><strong>Author:</strong> ${data.author}</p>
             <p><strong>Genre:</strong> ${data.genre}</p>
@@ -41,7 +47,7 @@
                 <li>
                   <p><strong>Name:</strong> ${owner.user_name}</p>
                   <p><strong>Email:</strong> ${owner.email}</p>
-                  <button onclick="goToUserPage(${owner.user_id})">Go to Page</button>
+                  <button onclick="goToUserPage(${owner.user_id})">Go to Profile</button>
                 </li>
               `;
             });

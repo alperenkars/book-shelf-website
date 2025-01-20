@@ -38,6 +38,8 @@
 
           // Render user details
           document.getElementById('user-details').innerHTML = `
+            <button onclick="redirectToHomePage()">Go to Home</button>
+            <button onclick="redirectToPreviousPage()">Go to Previous Page</button>
             <h1>${user.user_name}</h1>
             <p><strong>Email:</strong> ${user.email}</p>
             <h2>Followers</h2>
@@ -52,9 +54,21 @@
         document.getElementById('user-details').innerText = 'Error loading user details.';
       });
 
+    // Function to navigate to the user page  
     function redirectToUser(userId) {
       window.location.href = `?user_id=${userId}`;
     }
+
+    // Function to navigate to the home page
+    function redirectToHomePage() {
+      window.location.href = `/`;
+    }
+
+    // Function to go back to the previous page
+    function redirectToPreviousPage() {
+      window.history.back();
+    }
+
   </script>
 </body>
 </html>
