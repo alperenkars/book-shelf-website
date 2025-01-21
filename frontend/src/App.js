@@ -8,7 +8,7 @@ import Libraries from './components/Libraries';
 import LibraryDetails from './components/LibraryDetails';
 import Profile from './components/Profile';
 import Welcome from './components/Welcome';
-import { Site, Nav, Button } from 'tabler-react';
+import { Site, Nav, Button, Container, Grid } from 'tabler-react';
 import './App.css'; // Import the CSS file for additional styling
 
 const App = () => {
@@ -18,24 +18,50 @@ const App = () => {
     <Router>
       <Site.Wrapper>
         <Site.Header>
-          <Nav className="nav-bar">
-            <div className="nav-items">
-              <Nav.Item>
-                <Link to="/books" className="nav-link">Books</Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Link to="/users" className="nav-link">Users</Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Link to="/libraries" className="nav-link">Libraries</Link>
-              </Nav.Item>
-            </div>
-            <Nav.Item className="ml-auto">
-              <Button color="primary" RootComponent="a" href={`/profile/${userId}`}>
-                Profile
-              </Button>
-            </Nav.Item>
-          </Nav>
+          <Container className="navbar-container">
+            <Grid.Row className="align-items-center">
+              <Grid.Col auto>
+                <Site.Logo 
+                  href="/"
+                  alt="KUtüphane"
+                  className="navbar-brand"
+                >
+                  📚 Library System
+                </Site.Logo>
+              </Grid.Col>
+              <Grid.Col>
+                <Nav className="nav-bar">
+                  <div className="nav-items">
+                    <Nav.Item active>
+                      <Link to="/books" className="nav-link">
+                        <i className="fe fe-book mr-2"></i> Books
+                      </Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Link to="/users" className="nav-link">
+                        <i className="fe fe-users mr-2"></i> Users
+                      </Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Link to="/libraries" className="nav-link">
+                        <i className="fe fe-home mr-2"></i> Libraries
+                      </Link>
+                    </Nav.Item>
+                  </div>
+                  <Nav.Item className="ml-auto">
+                    <Button 
+                      color="primary" 
+                      RootComponent={Link}
+                      to={`/profile/${userId}`}
+                      icon="user"
+                    >
+                      My Profile
+                    </Button>
+                  </Nav.Item>
+                </Nav>
+              </Grid.Col>
+            </Grid.Row>
+          </Container>
         </Site.Header>
         <Routes>
         <Route path="/" element={<Welcome />} />

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Page, Card, Table } from 'tabler-react';
+import { Page, Card, Table, Button } from 'tabler-react';
 
 const LibraryDetails = () => {
   const { library_id } = useParams();
   const [library, setLibrary] = useState(null);
+  const [commonGenre, setCommonGenre] = useState(null);
 
   useEffect(() => {
     fetchLibrary();
@@ -17,6 +18,16 @@ const LibraryDetails = () => {
       setLibrary(data);
     } catch (error) {
       console.error('Error fetching library:', error);
+    }
+  };
+
+  const fetchMostCommonGenre = async () => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/libraries/${library_id}/most-common-genre`);
+      const data = await response.json();
+      setCommonGenre(data);
+    } catch (error) {
+      console.error('Error fetching most common genre:', error);
     }
   };
 
@@ -34,6 +45,14 @@ const LibraryDetails = () => {
           <p><strong>Description:</strong> {library.description}</p>
           <p><strong>Create Date:</strong> {library.create_date}</p>
           <p><strong>Built By:</strong> {library.built_by_name}</p>
+          <div style={{ marginTop: '1rem' }}>
+            <Button color="primary" onClick={fetchMostCommonGenre}>
+              Show Most Common Genre
+            </Button>
+          </div>
+          {commonGenre && (
+            <p style={{ marginTop: '1rem' }}><strong>Most Common Genre:</strong> {commonGenre.genre} (Count: {commonGenre.genre_count})</p>
+          )}
         </Card.Body>
       </Card>
       <Card>

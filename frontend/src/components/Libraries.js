@@ -5,19 +5,32 @@ import './Libraries.css'; // Import the CSS file for additional styling
 
 const Libraries = () => {
   const [libraries, setLibraries] = useState([]);
+  const [searchId, setSearchId] = useState(''); // Add searchId state
 
   useEffect(() => {
     fetchLibraries();
   }, []);
 
-  const fetchLibraries = async () => {
+  const fetchLibraries = async (library_id) => { // Modify fetchLibraries to use :library_id endpoint
     try {
-      const response = await fetch('http://localhost:5001/api/libraries');
+      let url = 'http://localhost:5001/api/libraries';
+      if (library_id) {
+        url += `/${library_id}`;
+      }
+      const response = await fetch(url);
       const data = await response.json();
       console.log('Fetched libraries data:', data); // Add this line to debug the libraries data
-      setLibraries(data);
+      setLibraries(library_id ? [data] : data); // Ensure libraries is always an array
     } catch (error) {
       console.error('Error fetching libraries:', error);
+    }
+  };
+
+  const handleSearch = () => { // Update handleSearch to use the new endpoint
+    if (searchId.trim() === '') {
+      fetchLibraries();
+    } else {
+      fetchLibraries(searchId);
     }
   };
 
@@ -25,7 +38,18 @@ const Libraries = () => {
     <Page.Content>
       <Card>
         <Card.Header>
-          <Card.Title>Libraries</Card.Title>
+          <div className="header-container"> {/* Add a flex container */}
+            <Card.Title>Libraries</Card.Title>
+            <div className="search-container"> {/* Move search-container inside header-container */}
+              <input 
+                type="text" 
+                value={searchId} 
+                onChange={(e) => setSearchId(e.target.value)} 
+                placeholder="Enter Library ID" 
+              />
+              <button onClick={handleSearch}>Search</button>
+            </div>
+          </div>
         </Card.Header>
         <Card.Body>
           <Table>

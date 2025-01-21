@@ -1,9 +1,10 @@
 const db = require('../config/database');
 
-// Get all libraries
+// Get all libraries with optional filtering
 exports.getAllLibraries = async (req, res) => {
+  const { library_id } = req.query;
   try {
-    const librariesQuery = `
+    let librariesQuery = `
       SELECT 
         l.library_id, 
         l.lib_name, 
@@ -16,7 +17,14 @@ exports.getAllLibraries = async (req, res) => {
       LEFT JOIN 
         User u ON l.built_by = u.user_id
     `;
-    const [libraries] = await db.query(librariesQuery);
+    const queryParams = [];
+
+    if (library_id) {
+      librariesQuery += ' WHERE l.library_id = ?';
+      queryParams.push(library_id);
+    }
+
+    const [libraries] = await db.query(librariesQuery, queryParams);
     res.json(libraries);
   } catch (error) {
     console.error('Error fetching libraries:', error);

@@ -1,26 +1,29 @@
 .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .filter-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .filter-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .filter-menu {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-button {
+  background-color: #007bff; /* Change to a more visible blue */
+  color: #020000; /* Change text color to white for better contrast */
+  border: 1px solid #0056b3;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Adjust shadow color for better visibility */
+}
+
+.filter-menu {
+  background-color: #f8f9fa; /* Lighten background for better readability */
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #7ca4cb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Adjust shadow color for better visibility */
+}

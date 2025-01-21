@@ -8,7 +8,8 @@ exports.getAllUsers = async (req, res) => {
       u.user_id, 
       u.user_name, 
       u.email,
-      (SELECT COUNT(*) FROM follow f WHERE f.following_id = u.user_id) AS followers_count
+      (SELECT COUNT(*) FROM follow f WHERE f.following_id = u.user_id) AS followers_count,
+      (SELECT COUNT(*) FROM User_Borrow_Book ubb WHERE ubb.user_id = u.user_id) AS books_borrowed
     FROM 
       User u
     WHERE 1=1
@@ -137,13 +138,14 @@ exports.getBooksByUserId = async (req, res) => {
 
 // Get active users
 exports.getActiveUsers = async (req, res) => {
-  const { limit = 10 } = req.query;
+  const { limit = 20 } = req.query;
 
   const query = `
     SELECT 
       u.user_id, 
       u.user_name, 
       u.email,
+      (SELECT COUNT(*) FROM follow f WHERE f.following_id = u.user_id) AS followers_count,
       COUNT(ubb.user_id) AS books_borrowed
     FROM 
       User u
@@ -178,7 +180,7 @@ exports.getActiveUsers = async (req, res) => {
 exports.getUsersWithMostCommonBorrowedGenre = async (req, res) => {
   const { user_id } = req.params;
 
-  // Find the most borrowed genre for the given user
+
   const userGenreQuery = `
     SELECT b.genre, COUNT(*) AS borrow_count
     FROM User_Borrow_Book ubb
@@ -190,35 +192,55 @@ exports.getUsersWithMostCommonBorrowedGenre = async (req, res) => {
     LIMIT 1;
   `;
 
-  // Find other users who share the same most-borrowed genre
-  const similarUsersQuery = `
-    SELECT 
-      u.user_id, 
-      u.user_name, 
-      u.email, 
-      COUNT(*) AS borrow_count
-    FROM User_Borrow_Book ubb
-    JOIN BookCopy bc ON ubb.copy_id = bc.copy_id
-    JOIN Book b ON bc.book_id = b.book_id
-    JOIN User u ON ubb.user_id = u.user_id
-    WHERE b.genre = ? AND u.user_id != ?
-    GROUP BY u.user_id, u.user_name, u.email
-    ORDER BY borrow_count DESC;
-  `;
+  try {
+    const [rows] = await db.query(userGenreQuery, [user_id]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'No borrowed genres found for this user' });
+    }
+    res.json(rows[0]);
+  } catch (error) {
+    console.error('Error fetching most common borrowed genre:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// Get users by favorite genre
+exports.getUsersByFavoriteGenre = async (req, res) => {
+  const { genre } = req.query;
+
+  const favoriteGenreQuery = `
+  SELECT 
+    u.user_id, 
+    u.user_name, 
+    u.email, 
+    b.genre, 
+    COUNT(*) AS borrow_count,
+    (SELECT COUNT(*) FROM follow f WHERE f.following_id = u.user_id) AS followers_count,
+    COUNT(ubb.user_id) AS books_borrowed
+  FROM 
+    User u
+  JOIN 
+    User_Borrow_Book ubb ON u.user_id = ubb.user_id
+  JOIN 
+    BookCopy bc ON ubb.copy_id = bc.copy_id
+  JOIN 
+    Book b ON bc.book_id = b.book_id
+  WHERE 
+    b.genre = ?
+  GROUP BY 
+    u.user_id, u.user_name, u.email, b.genre
+  ORDER BY 
+    borrow_count DESC;
+`;
 
   try {
-    const [userGenreResult] = await db.query(userGenreQuery, [user_id]);
-
-    if (userGenreResult.length === 0) {
-      return res.status(404).json({ error: 'No borrowed books found for this user' });
+    const [rows] = await db.query(favoriteGenreQuery, [genre]);
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'No users found for this genre' });
     }
-
-    const favoriteGenre = userGenreResult[0].genre;
-    const [similarUsers] = await db.query(similarUsersQuery, [favoriteGenre, user_id]);
-
-    res.json({ favorite_genre: favoriteGenre, similar_users: similarUsers });
+    res.json(rows);
   } catch (error) {
-    console.error('Error fetching users with the most common borrowed genre:', error);
+    console.error('Error fetching users by favorite genre:', error);
     res.status(500).send('Internal Server Error');
   }
 };

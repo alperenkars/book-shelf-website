@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Page, Card, Table, Grid, Text } from 'tabler-react';
+import { Page, Card, Table, Grid, Text, Button, Alert, Avatar } from 'tabler-react'; // Import Avatar component
 import './UserDetails.css'; // Import the CSS file for additional styling
 
 const UserDetails = () => {
   const { user_id } = useParams();
   const [user, setUser] = useState(null);
   const [books, setBooks] = useState([]);
+  const [mostCommonGenre, setMostCommonGenre] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchUser();
@@ -31,6 +33,21 @@ const UserDetails = () => {
       setBooks(data);
     } catch (error) {
       console.error('Error fetching books:', error);
+    }
+  };
+
+  const fetchMostCommonGenre = async () => {
+    console.log('Button clicked'); // Add this line to debug button click
+    try {
+      const response = await fetch(`http://localhost:5001/api/users/${user_id}/most-common-genre`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch most common borrowed genre');
+      }
+      const data = await response.json();
+      console.log('Fetched most common genre data:', data); // Add this line to debug the response data
+      setMostCommonGenre(data);
+    } catch (error) {
+      setError(error.message);
     }
   };
 
@@ -69,6 +86,17 @@ const UserDetails = () => {
               </Card>
             </Grid.Col>
           </Grid.Row>
+          <Button color="primary" onClick={fetchMostCommonGenre} className="mt-3">See Most Borrowed Genre</Button>
+          {mostCommonGenre && (
+            <Alert type="info" className="mt-3">
+              Most Borrowed Genre: {mostCommonGenre.genre} ({mostCommonGenre.borrow_count} times)
+            </Alert>
+          )}
+          {error && (
+            <Alert type="danger" className="mt-3">
+              {error}
+            </Alert>
+          )}
         </Card.Body>
       </Card>
       <Card>
