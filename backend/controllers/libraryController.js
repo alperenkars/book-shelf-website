@@ -68,3 +68,40 @@ exports.getLibraryById = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+
+// Get the most common genre in a library
+exports.getMostCommonGenre = async (req, res) => {
+  const { library_id } = req.params;
+
+  const mostCommonGenreQuery = `
+    SELECT 
+      b.genre, 
+      COUNT(*) AS genre_count
+    FROM 
+      Book b
+    JOIN 
+      BookCopy bc ON b.book_id = bc.book_id
+    JOIN 
+      library_includes_book lib ON bc.copy_id = lib.copy_id
+    WHERE 
+      lib.library_id = ?
+    GROUP BY 
+      b.genre
+    ORDER BY 
+      genre_count DESC
+    LIMIT 1;
+  `;
+
+  try {
+    const [result] = await db.query(mostCommonGenreQuery, [library_id]);
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: 'No genres found for this library' });
+    }
+
+    res.json(result[0]);
+  } catch (error) {
+    console.error('Error fetching the most common genre:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};

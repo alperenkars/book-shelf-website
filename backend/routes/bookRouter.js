@@ -1,11 +1,14 @@
 const express = require('express');
+const { 
+  getBooks, 
+  getBookById, 
+  getMostPopularBooks 
+} = require('../controllers/bookController');
+
 const router = express.Router();
-const bookController = require('../controllers/bookController');
 
-// Fetch all books
-router.get('/', bookController.getBooks);
-
-// Fetch book details by ID
-router.get('/:bookId', bookController.getBookById);
+router.get('/', getBooks);
+router.get('/popular', getMostPopularBooks);
+router.get('/:bookId', getBookById);
 
 module.exports = router;

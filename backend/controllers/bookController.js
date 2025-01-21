@@ -92,3 +92,32 @@ exports.getBookById = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
+
+exports.getMostPopularBooks = async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        b.book_id, 
+        b.title, 
+        b.author, 
+        COUNT(ubb.copy_id) AS borrow_count
+      FROM 
+        book b
+      JOIN 
+        bookcopy bc ON b.book_id = bc.book_id
+      JOIN 
+        user_borrow_book ubb ON bc.copy_id = ubb.copy_id
+      GROUP BY 
+        b.book_id
+      ORDER BY 
+        borrow_count DESC
+      LIMIT 10;
+    `;
+
+    const [rows] = await db.query(query);
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching most popular books:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
