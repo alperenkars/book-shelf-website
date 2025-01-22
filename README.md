@@ -45,7 +45,7 @@ Run the following command in the databse file to fill up the database:
   ```
 
 ### 2. Start the Server
-Run the following command in the backend file to start the project server:
+Go to backend/ direcotry and run the following command to start the project server:
 
   ```bash
   node app.js  
@@ -53,5 +53,8 @@ Run the following command in the backend file to start the project server:
 ---
 
 ### 3. Start the frontend: 
-#TODO
+Go to frontend/ direcotry and run the following command to start frontend, it will automatically direct you to webpage:
+  ```bash
+  npm start  
+  ```
 
