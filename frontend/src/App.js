@@ -21,18 +21,14 @@ const App = () => {
           <Container className="navbar-container">
             <Grid.Row className="align-items-center">
               <Grid.Col auto>
-                <Site.Logo 
-                  href="/"
-                  alt="KUtüphane"
-                  className="navbar-brand"
-                >
-                  📚 Library System
-                </Site.Logo>
+                <Link to="/" className="navbar-brand logo-container">
+                  <img src="/image.png" alt="KUtüphane Logo" className="logo-image" />
+                </Link>
               </Grid.Col>
               <Grid.Col>
                 <Nav className="nav-bar">
                   <div className="nav-items">
-                    <Nav.Item active>
+                    <Nav.Item>
                       <Link to="/books" className="nav-link">
                         <i className="fe fe-book mr-2"></i> Books
                       </Link>
@@ -53,9 +49,8 @@ const App = () => {
                       color="primary" 
                       RootComponent={Link}
                       to={`/profile/${userId}`}
-                      icon="user"
                     >
-                      My Profile
+                      Profile
                     </Button>
                   </Nav.Item>
                 </Nav>
@@ -64,8 +59,7 @@ const App = () => {
           </Container>
         </Site.Header>
         <Routes>
-        <Route path="/" element={<Welcome />} />
-          <Route path="/" element={<Books />} />
+          <Route path="/" element={<Welcome />} />
           <Route path="/books" element={<Books />} />
           <Route path="/books/:bookId" element={<BookDetails />} />
           <Route path="/users" element={<Users />} />

@@ -7,9 +7,9 @@ const {
 
 const router = express.Router();
 
-router.get('/', getAllLibraries);
-router.get('/:library_id', getLibraryById);
+// Move specific routes below the general route to prevent conflict
 router.get('/:library_id/most-common-genre', getMostCommonGenre);
-
+router.get('/:library_id', getLibraryById);
+router.get('/', getAllLibraries);
 
 module.exports = router;

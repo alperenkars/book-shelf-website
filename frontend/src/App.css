@@ -23,6 +23,9 @@ body::before {
 
 .navbar-container {
   padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .navbar-brand {
@@ -51,17 +54,19 @@ body::before {
   font-size: 0.95rem;
   font-weight: 500;
   color: #4a5568;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  text-decoration: none;
+  text-decoration: none !important;
   display: flex;
   align-items: center;
-  transition: all 0.2s ease;
+  pointer-events: auto;
+  background: none !important;
 }
 
-.nav-link:hover {
-  background-color: rgba(26, 115, 232, 0.1);
-  color: #1a73e8;
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active {
+  color: #4a5568 !important;
+  text-decoration: none !important;
+  background: none !important;
 }
 
 .nav-link i {
@@ -76,6 +81,11 @@ body::before {
   font-weight: 500;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
+}
+
+.ml-auto .btn-primary:hover {
+  background-color: #1557b0;
+  border-color: #1557b0;
 }
 
 .profile-button {
@@ -140,3 +150,99 @@ body::before {
   background-color: rgba(244, 244, 249, 0.9);
   min-height: 100vh;
 }
+
+/* ...existing code... */
+
+.nav-items a,
+.nav-link,
+.nav-items .nav-item {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.nav-items .nav-item::after,
+.nav-items .nav-item::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Make sure links don't have any decorative elements */
+.nav-items a:link,
+.nav-items a:visited,
+.nav-items a:hover,
+.nav-items a:active,
+.nav-items a:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+}
+
+/* ...existing code... */
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  transition: transform 0.2s ease;
+}
+
+.logo-image {
+  width: auto;
+  height: 50px; /* Adjust the height as needed */
+}
+
+/* Remove styles related to the previous logo-group */
+/* If there are any styles for .logo-group, .logo-title, or .logo-tag, you can remove or comment them out */
+
+/* Remove any previously added banner styles */
+.header-banner,
+.banner-badge {
+  display: none;
+}
+
+/* ...existing code... */
+
+.header-banner {
+  background: linear-gradient(45deg, #1a73e8, #0056b3);
+  color: white;
+  padding: 0.5rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.banner-badge {
+  margin-right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+}
+
+.header-card {
+  margin: 0;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+  background: none;
+  box-shadow: none;
+  padding: 0.75rem;
+}
+
+.logo-avatar {
+  margin-right: 0.75rem;
+  background: linear-gradient(135deg, #1a73e8, #0056b3);
+}
+
+.nav-bar {
+  background: none;
+}
+
+/* ...existing code... */
+
+/* ...existing code... */
