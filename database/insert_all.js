@@ -1,5 +1,9 @@
+
 const { exec } = require('child_process');
 const path = require('path');
+
+// Path to the insert_scripts directory
+const scriptsDir = path.join(__dirname, 'insert_scripts');
 
 // Array of insert scripts to execute in order
 const scripts = [
@@ -17,7 +21,7 @@ const scripts = [
 const runScript = (script) => {
   return new Promise((resolve, reject) => {
     console.log(`Running ${script}...`);
-    exec(`node ${path.join(__dirname, script)}`, (error, stdout, stderr) => {
+    exec(`node ${path.join(scriptsDir, script)}`, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing ${script}:`, stderr);
         reject(error);

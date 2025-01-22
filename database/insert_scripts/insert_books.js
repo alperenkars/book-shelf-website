@@ -3,7 +3,7 @@ const fs = require('fs');
 require('dotenv').config({ path: '../.env' });
 
 // Read the dataset file
-const books = JSON.parse(fs.readFileSync('books_dataset.json', 'utf-8'));
+const books = JSON.parse(fs.readFileSync('insert_scripts/books_dataset.json', 'utf-8'));
 
 // Create a connection to the database
 const connection = mysql.createConnection({

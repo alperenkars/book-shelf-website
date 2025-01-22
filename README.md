@@ -28,7 +28,7 @@ This guide will help you set up and run the project on your local machine. You c
 ---
 
 ### 2. Install Dependencies
-1. Navigate to the project directory in your terminal.
+1. Navigate to the project directories one by one /backend, /database, /frontend in your terminal.
 2. Run the following command to install the required Node.js modules:
 
     ```bash
@@ -38,19 +38,20 @@ This guide will help you set up and run the project on your local machine. You c
 
 ## Running the Project
 
-### 1. Start the Server
+### 1. Fill the database
+Run the following command in the databse file to fill up the database:
+  ```bash
+  node insert_all.js  
+  ```
+
+### 2. Start the Server
 Run the following command in the backend file to start the project server:
 
   ```bash
   node app.js  
   ```
 ---
-### 2. Route the Server
-Run the following command in the project file in different terminal:
 
-  ```bash
-  python -m http.server 8000
-  ```
-### 3. Open your browser and go to: 
-http://localhost:8000
+### 3. Start the frontend: 
+#TODO
 
