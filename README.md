@@ -3,7 +3,7 @@
 
 Users can create personal libraries, list books they’ve read, and follow other users to explore their collections. The app allows for a collaborative and interactive reading experience and makes it easy to discover new books and share recommendations. 
 
-Built with a focus on database design and efficient data management, BookHub demonstrates the integration of relational database principles with a user-friendly web interface.
+Built with a focus on database design and efficient data management with SQL, KUtüphane demonstrates the integration of relational database principles with a user-friendly web interface.
 
 # Project Setup Instructions
 
